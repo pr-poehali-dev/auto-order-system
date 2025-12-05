@@ -31,6 +31,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const kpiData = {
     ordersToCheck: 23,
@@ -162,24 +163,26 @@ const Index = () => {
 
   const menuItems = [
     { id: 'dashboard', label: 'Дашборд', icon: 'LayoutDashboard' },
-    { id: 'orders', label: 'Рабочий стол', icon: 'ClipboardList' },
-    { id: 'calculation', label: 'Расчет заказа', icon: 'Calculator' },
+    { id: 'orders', label: 'Панель расчета заказов', icon: 'ClipboardList' },
     { id: 'journal', label: 'Журнал заказов', icon: 'FileText' },
-    { id: 'settings', label: 'Настройки', icon: 'Settings' },
-    { id: 'analytics', label: 'Аналитика', icon: 'BarChart3' }
+    { id: 'settings', label: 'Настройки', icon: 'Settings' }
   ];
 
   return (
     <div className="min-h-screen bg-background flex">
-      <aside className="w-64 bg-sidebar-background border-r border-sidebar-border flex-shrink-0">
+      <aside className={`bg-sidebar-background border-r border-sidebar-border flex-shrink-0 transition-all duration-300 ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
         <div className="p-6 border-b border-sidebar-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
-              <Icon name="Package" className="text-sidebar-primary-foreground" size={24} />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-sidebar-foreground">Система</h1>
-              <p className="text-xs text-sidebar-foreground/60">Автозаказ</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
+                <Icon name="Package" className="text-sidebar-primary-foreground" size={24} />
+              </div>
+              {!sidebarCollapsed && (
+                <div>
+                  <h1 className="text-lg font-bold text-sidebar-foreground">АЗ РЦ</h1>
+                  <p className="text-xs text-sidebar-foreground/60">Автозаказ</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -187,24 +190,28 @@ const Index = () => {
           {menuItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => {
-                if (item.id === 'calculation') {
-                  navigate('/order/1');
-                } else {
-                  setActiveTab(item.id);
-                }
-              }}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'} px-4 py-3 rounded-lg transition-all ${
                 activeTab === item.id
                   ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
                   : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
               }`}
+              title={sidebarCollapsed ? item.label : ''}
             >
               <Icon name={item.icon} size={20} />
-              <span className="text-sm">{item.label}</span>
+              {!sidebarCollapsed && <span className="text-sm">{item.label}</span>}
             </button>
           ))}
         </nav>
+        <div className="absolute bottom-6 left-0 right-0 px-3">
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="w-full flex items-center justify-center px-4 py-3 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all"
+            title={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
+          >
+            <Icon name={sidebarCollapsed ? 'ChevronRight' : 'ChevronLeft'} size={20} />
+          </button>
+        </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -498,25 +505,7 @@ const Index = () => {
             <SystemSettings />
           </TabsContent>
 
-          <TabsContent value="analytics">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Icon name="BarChart3" size={20} className="mr-2" />
-                  Аналитика и прогнозирование
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64 flex items-center justify-center text-muted-foreground">
-                  <div className="text-center">
-                    <Icon name="TrendingUp" size={48} className="mx-auto mb-4 opacity-50" />
-                    <p>Раздел аналитики в разработке</p>
-                    <p className="text-sm">Здесь будут графики прогнозирования спроса и анализ сезонности</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+
         </Tabs>
         </main>
       </div>
