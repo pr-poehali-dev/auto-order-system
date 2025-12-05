@@ -9,6 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Icon from '@/components/ui/icon';
+import OrdersJournal from '@/components/OrdersJournal';
+import SystemSettings from '@/components/SystemSettings';
 
 interface OrderItem {
   id: string;
@@ -196,6 +198,14 @@ const Index = () => {
             <TabsTrigger value="orders">
               <Icon name="ClipboardList" size={16} className="mr-2" />
               Рабочий стол
+            </TabsTrigger>
+            <TabsTrigger value="journal">
+              <Icon name="FileText" size={16} className="mr-2" />
+              Журнал заказов
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <Icon name="Settings" size={16} className="mr-2" />
+              Настройки
             </TabsTrigger>
             <TabsTrigger value="analytics">
               <Icon name="BarChart3" size={16} className="mr-2" />
@@ -458,6 +468,14 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="journal">
+            <OrdersJournal />
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <SystemSettings />
           </TabsContent>
 
           <TabsContent value="analytics">
