@@ -170,46 +170,43 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      <aside className={`bg-sidebar-background border-r border-sidebar-border flex-shrink-0 transition-all duration-300 flex flex-col ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
-        <div className="p-6 border-b border-sidebar-border">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
-                <Icon name="Package" className="text-sidebar-primary-foreground" size={24} />
-              </div>
-              {!sidebarCollapsed && (
-                <div>
-                  <h1 className="text-lg font-bold text-sidebar-foreground">АЗ РЦ</h1>
-                  <p className="text-xs text-sidebar-foreground/70">Автозаказ</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="px-3 py-3">
+      <aside className={`bg-sidebar-background flex-shrink-0 transition-all duration-300 flex flex-col ${sidebarCollapsed ? 'w-16' : 'w-80'}`}>
+        <div className="p-6">
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="w-full flex items-center justify-center px-4 py-2 rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all"
-            title={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
+            className="flex items-center text-sidebar-foreground/90 hover:text-sidebar-foreground mb-8"
           >
-            <Icon name={sidebarCollapsed ? 'ChevronRight' : 'ChevronLeft'} size={20} />
-            {!sidebarCollapsed && <span className="text-sm ml-2">Свернуть</span>}
+            <Icon name="ChevronLeft" size={24} />
+            {!sidebarCollapsed && <span className="text-lg ml-2">Свернуть</span>}
           </button>
+
+          {!sidebarCollapsed && (
+            <div className="flex items-center space-x-4 mb-8">
+              <div className="w-16 h-16 bg-sidebar-primary/30 rounded-2xl flex items-center justify-center">
+                <Icon name="Package" className="text-sidebar-primary" size={32} />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-sidebar-foreground">OrderFlow</h1>
+                <p className="text-sm text-sidebar-foreground/60">Система управления</p>
+              </div>
+            </div>
+          )}
         </div>
-        <nav className="p-3 space-y-1 flex-1">
+
+        <nav className="px-4 space-y-2 flex-1">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'} px-4 py-3 rounded-lg transition-all ${
+              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-4' : 'space-x-4 px-5'} py-4 rounded-2xl transition-all text-base ${
                 activeTab === item.id
-                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-lg'
+                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/30 hover:text-sidebar-foreground'
               }`}
               title={sidebarCollapsed ? item.label : ''}
             >
-              <Icon name={item.icon} size={20} />
-              {!sidebarCollapsed && <span className="text-sm">{item.label}</span>}
+              <Icon name={item.icon} size={22} />
+              {!sidebarCollapsed && <span>{item.label}</span>}
             </button>
           ))}
         </nav>
