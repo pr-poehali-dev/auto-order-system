@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +26,7 @@ interface OrderItem {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
@@ -398,7 +400,11 @@ const Index = () => {
                       </thead>
                       <tbody>
                         {orders.map((order) => (
-                          <tr key={order.id} className="border-b hover:bg-muted/50 transition-colors">
+                          <tr 
+                            key={order.id} 
+                            className="border-b hover:bg-muted/50 transition-colors cursor-pointer"
+                            onClick={() => navigate(`/order/${order.id}`)}
+                          >
                             <td className="p-3">
                               <Checkbox
                                 checked={selectedOrders.includes(order.id)}
