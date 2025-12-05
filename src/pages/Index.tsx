@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Icon from '@/components/ui/icon';
+import OrderDetailPanel from '@/components/OrderDetailPanel';
 
 interface OrderItem {
   id: string;
@@ -27,6 +28,8 @@ interface OrderItem {
 const Index = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [selectedOrderForDetail, setSelectedOrderForDetail] = useState<OrderItem | null>(null);
+  const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
 
   const kpiData = {
     ordersToCheck: 23,
@@ -398,7 +401,16 @@ const Index = () => {
                       </thead>
                       <tbody>
                         {orders.map((order) => (
-                          <tr key={order.id} className="border-b hover:bg-muted/50 transition-colors">
+                          <tr 
+                            key={order.id} 
+                            className="border-b hover:bg-muted/50 transition-colors cursor-pointer"
+                            onClick={(e) => {
+                              if (!(e.target as HTMLElement).closest('input, button, .select-trigger')) {
+                                setSelectedOrderForDetail(order);
+                                setIsDetailPanelOpen(true);
+                              }
+                            }}
+                          >
                             <td className="p-3">
                               <Checkbox
                                 checked={selectedOrders.includes(order.id)}
@@ -475,6 +487,12 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <OrderDetailPanel
+        order={selectedOrderForDetail}
+        isOpen={isDetailPanelOpen}
+        onClose={() => setIsDetailPanelOpen(false)}
+      />
     </div>
   );
 };
