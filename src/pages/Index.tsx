@@ -198,10 +198,10 @@ const Index = () => {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-4' : 'space-x-4 px-5'} py-4 rounded-2xl transition-all text-base ${
+              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-4' : 'space-x-4 px-5'} py-4 rounded-2xl transition-all text-base bg-sidebar-accent/20 ${
                 activeTab === item.id
                   ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-lg'
-                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/30 hover:text-sidebar-foreground'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/40'
               }`}
               title={sidebarCollapsed ? item.label : ''}
             >
