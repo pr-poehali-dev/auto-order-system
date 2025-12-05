@@ -170,7 +170,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      <aside className={`bg-sidebar-background border-r border-sidebar-border flex-shrink-0 transition-all duration-300 relative ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
+      <aside className={`bg-sidebar-background border-r border-sidebar-border flex-shrink-0 transition-all duration-300 flex flex-col ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
         <div className="p-6 border-b border-sidebar-border">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -180,13 +180,23 @@ const Index = () => {
               {!sidebarCollapsed && (
                 <div>
                   <h1 className="text-lg font-bold text-sidebar-foreground">АЗ РЦ</h1>
-                  <p className="text-xs text-sidebar-foreground/60">Автозаказ</p>
+                  <p className="text-xs text-sidebar-foreground/70">Автозаказ</p>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <nav className="p-3 space-y-1">
+        <div className="px-3 py-3">
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="w-full flex items-center justify-center px-4 py-2 rounded-lg text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all"
+            title={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
+          >
+            <Icon name={sidebarCollapsed ? 'ChevronRight' : 'ChevronLeft'} size={20} />
+            {!sidebarCollapsed && <span className="text-sm ml-2">Свернуть</span>}
+          </button>
+        </div>
+        <nav className="p-3 space-y-1 flex-1">
           {menuItems.map((item) => (
             <button
               key={item.id}
@@ -194,7 +204,7 @@ const Index = () => {
               className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'space-x-3'} px-4 py-3 rounded-lg transition-all ${
                 activeTab === item.id
                   ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
               }`}
               title={sidebarCollapsed ? item.label : ''}
             >
@@ -203,15 +213,6 @@ const Index = () => {
             </button>
           ))}
         </nav>
-        <div className="absolute bottom-6 left-0 right-0 px-3">
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="w-full flex items-center justify-center px-4 py-3 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all"
-            title={sidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
-          >
-            <Icon name={sidebarCollapsed ? 'ChevronRight' : 'ChevronLeft'} size={20} />
-          </button>
-        </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
