@@ -160,58 +160,78 @@ const Index = () => {
     }
   };
 
+  const menuItems = [
+    { id: 'dashboard', label: 'Дашборд', icon: 'LayoutDashboard' },
+    { id: 'orders', label: 'Рабочий стол', icon: 'ClipboardList' },
+    { id: 'calculation', label: 'Расчет заказа', icon: 'Calculator' },
+    { id: 'journal', label: 'Журнал заказов', icon: 'FileText' },
+    { id: 'settings', label: 'Настройки', icon: 'Settings' },
+    { id: 'analytics', label: 'Аналитика', icon: 'BarChart3' }
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="Package" className="text-primary-foreground" size={24} />
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold text-foreground">Система автозаказа</h1>
-                <p className="text-sm text-muted-foreground">Распределительный центр</p>
-              </div>
+    <div className="min-h-screen bg-background flex">
+      <aside className="w-64 bg-sidebar-background border-r border-sidebar-border flex-shrink-0">
+        <div className="p-6 border-b border-sidebar-border">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
+              <Icon name="Package" className="text-sidebar-primary-foreground" size={24} />
             </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <Icon name="Bell" size={16} className="mr-2" />
-                Уведомления
-              </Button>
-              <Button variant="outline" size="sm">
-                <Icon name="Settings" size={16} className="mr-2" />
-                Настройки
-              </Button>
+            <div>
+              <h1 className="text-lg font-bold text-sidebar-foreground">Система</h1>
+              <p className="text-xs text-sidebar-foreground/60">Автозаказ</p>
             </div>
           </div>
         </div>
-      </header>
+        <nav className="p-3 space-y-1">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                if (item.id === 'calculation') {
+                  navigate('/order/1');
+                } else {
+                  setActiveTab(item.id);
+                }
+              }}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
+                activeTab === item.id
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+              }`}
+            >
+              <Icon name={item.icon} size={20} />
+              <span className="text-sm">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </aside>
 
-      <div className="container mx-auto px-6 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
-            <TabsTrigger value="dashboard">
-              <Icon name="LayoutDashboard" size={16} className="mr-2" />
-              Дашборд
-            </TabsTrigger>
-            <TabsTrigger value="orders">
-              <Icon name="ClipboardList" size={16} className="mr-2" />
-              Рабочий стол
-            </TabsTrigger>
-            <TabsTrigger value="journal">
-              <Icon name="FileText" size={16} className="mr-2" />
-              Журнал заказов
-            </TabsTrigger>
-            <TabsTrigger value="settings">
-              <Icon name="Settings" size={16} className="mr-2" />
-              Настройки
-            </TabsTrigger>
-            <TabsTrigger value="analytics">
-              <Icon name="BarChart3" size={16} className="mr-2" />
-              Аналитика
-            </TabsTrigger>
-          </TabsList>
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="border-b bg-card sticky top-0 z-50">
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">
+                  {menuItems.find(m => m.id === activeTab)?.label || 'Дашборд'}
+                </h2>
+                <p className="text-sm text-muted-foreground">РЦ Москва • 0001-МСК</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Button variant="outline" size="sm">
+                  <Icon name="Bell" size={16} className="mr-2" />
+                  Уведомления
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Icon name="User" size={20} />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="flex-1 p-6 overflow-auto">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
 
           <TabsContent value="dashboard" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -498,6 +518,7 @@ const Index = () => {
             </Card>
           </TabsContent>
         </Tabs>
+        </main>
       </div>
     </div>
   );
